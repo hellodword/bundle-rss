@@ -2,33 +2,39 @@
 
 将多个 RSS 源聚合到一起进行输出
 
+## Go
+
+Go 的核心库功能不足， [自己实现](https://github.com/hellodword/grss) 太繁琐， libxml2 binding 要引入 CGO，C to Go 还没有好方案，所以还是用 Python 吧， [feedvalidator](https://github.com/w3c/feedvalidator/blob/a9b8d2074f3dc9eb93620d3023ce2348eef25798/requirements.txt) 也是 Python。
+
+## rss-filter
+
+- [ ] 修改 RSS channel 的 Elements
+    - [ ] title
+    - [ ] link
+    - [ ] description
+- [ ] 匹配 RSS item 的 Elements
+    - [ ] title
+    - [ ] link
+    - [ ] description
+- [ ] 无状态（参数全部在 URL 里）
+- [ ] 持久化（通过短网址映射到数据库）
+- [ ] insecure
+
 ## TODO
 
-- 可以为每个源设定 tag
-- 可以自定义源的 title
-- 可以为每个源添加备注
-- 可以单独设定每个源的抓取间隔、是否允许 insecure 等等
-- [以 link 为唯一 ID](#为什么不信任-rss-源内的-id)，全部入库
-- 可以设定每个源是否去除锚点，也可以通过正则表达式来全局排除
-- 可以为每个源设定过滤（考虑是否独立出来做，类似 [siftrss](https://siftrss.com/)）
-- 可以为每个源设定 user-agent 等参数
-- 源的基础类型是单一的链接，但是也可以是一系列 http requests（相当于可以实现脚本化的 RSSHub）
-- 为操作提供 HTTP API
-- 为操作接入 Telegram Bot 等交互方式
-- 能够以 tag 为粒度设定聚合
-- 聚合方式可以是主动推送，也可以是被动生成一个新的 rss，或是别的方式
-- 推送可以设定频率，也可以设定时间点统一推送
-- 推送接入 [apprise](https://github.com/caronc/apprise-api)
-
-
-
-## 思考
-
-### 应该推动源变得规范还是应该去对不规范的源做兼容？
-
-视影响力而定，作为毫无影响力的普通用户，我觉得我应该当后者。
-
-### 为什么不信任 RSS 源内的 id？
-
-我觉得无需信任，[因为没有办法保证每个源的 id 都是标准的](#应该推动源变得规范还是应该去对不规范的源做兼容)，既然如此，我选择一律以 link 为唯一 ID。如果不同源有相同的 link，那也符合我的预期。
+- [ ] 可以为每个源设定 tag
+- [ ] 可以自定义源的 title
+- [ ] 可以为每个源添加备注
+- [ ] 可以单独设定每个源的抓取间隔、是否允许 insecure 等等
+- [ ] 可以设定每个源是否去除锚点，也可以通过正则表达式来全局排除
+- [ ] 可以设定每个源是否以 link 为唯一 ID，全部入库
+- [ ] 可以为每个源设定过滤（考虑是否[独立出来做](#rss-filter)，类似 [siftrss](https://siftrss.com/)）
+- [ ] 可以为每个源设定 user-agent 等参数
+- [ ] 源的基础类型是单一的链接，但是也可以是一系列 http requests（相当于可以实现脚本化的 RSSHub）
+- [ ] 为操作提供 HTTP API
+- [ ] 为操作接入 Telegram Bot 等交互方式
+- [ ] 能够以 tag 为粒度设定聚合，可以为 tag 单独配置输出
+- [ ] 聚合方式可以是主动推送，也可以是被动生成一个新的 rss，或是别的方式
+- [ ] 推送可以设定频率，也可以设定时间点统一推送
+- [ ] 推送接入 [apprise](https://github.com/caronc/apprise-api)
 
