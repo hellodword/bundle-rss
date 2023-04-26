@@ -13,6 +13,21 @@
         "hellodword",
         "devcontainer",
         "siftrss",
-        "feedvalidator"
+        "feedvalidator",
+        "fastapi",
+        "pydantic",
+        "anyio",
+        "httptools",
+        "lxml",
+        "idna",
+        "sniffio",
+        "starlette",
+        "uvicorn",
+        "uvloop",
+        "watchfiles",
+        "websockets",
+        "KHTML",
+        "useragent",
+        "httpx"
     ]
 }
