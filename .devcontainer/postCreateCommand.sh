@@ -12,4 +12,11 @@ if [ -f ~/.git-completion.bash ]; then
 fi
 EOF
 
+pip completion --bash > ~/.pip-completion.bash
+cat << EOF >> ~/.bashrc
+if [ -f ~/.pip-completion.bash ]; then
+  . ~/.pip-completion.bash
+fi
+EOF
+
 make init

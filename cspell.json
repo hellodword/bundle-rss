@@ -28,6 +28,7 @@
         "websockets",
         "KHTML",
         "useragent",
-        "httpx"
+        "httpx",
+        "chardet"
     ]
 }
