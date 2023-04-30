@@ -29,6 +29,8 @@
         "KHTML",
         "useragent",
         "httpx",
-        "chardet"
+        "chardet",
+        "CHACHA20",
+        "localname"
     ]
 }
