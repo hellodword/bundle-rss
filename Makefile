@@ -1,5 +1,4 @@
 # The binary to build (just the basename).
-MODULE := rss_bundle
 
 init:
 	pip install -r requirements.txt
@@ -7,7 +6,10 @@ init:
 test:
 	py.test tests
 
-run:
-	@python -m $(MODULE)
+bundle:
+	@python -m rss_bundle
+
+proxy:
+	@uvicorn rss_proxy.__main__:app
 
 PHONY: init test

@@ -1,7 +1,6 @@
 from io import BytesIO
 from lxml import etree
-import cgi
-from typing import Union
+from typing import Union, List
 from enum import Enum
 import chardet
 import fastapi
@@ -24,6 +23,14 @@ class FormatEnum(str, Enum):
     RSS = "rss"
     ATOM = "atom"
     JSON = "json"
+
+    def MIME(self):
+        content_type_fulls = {
+            FormatEnum.ATOM: 'application/xml',
+            FormatEnum.RSS: 'application/xml',
+            FormatEnum.JSON: 'application/json',
+        }
+        return content_type_fulls[self]
 
 
 app = fastapi.FastAPI()
@@ -50,6 +57,10 @@ def proxy(
         alias='out.format',
     ),
     pretty: Union[bool, None] = fastapi.Query(default=True),
+    status_code: List[int] = fastapi.Query(
+        default=list(range(200, 300)),
+        alias='status_code',
+    ),
     channel_title: Union[str, None] = fastapi.Query(
         default=None,
         alias='channel.title',
@@ -95,8 +106,7 @@ def proxy(
             follow_redirects=True,
             timeout=DEFAULT_TIMEOUT,
         ) as r:
-            # TODO allow non-2xx response
-            if not httpx.codes.is_success(r.status_code):
+            if r.status_code in status_code:
                 print(f'{r.status_code}')
                 # TODO response for error
                 return fastapi.Response(
@@ -124,7 +134,7 @@ def proxy(
         if in_encoding == 'auto':
             charset = chardet.detect(raw_content.getvalue())
             in_encoding = charset.get('encoding')
-            if in_encoding is None or in_encoding == '':
+            if not in_encoding:
                 in_encoding = 'utf-8'
         content = raw_content.getvalue().decode(in_encoding).encode()
     except Exception as e:
@@ -135,13 +145,7 @@ def proxy(
 
     # TODO parse and generate rss (xml)
 
-    content_type_fulls = {
-        FormatEnum.ATOM: 'application/xml',
-        FormatEnum.RSS: 'application/xml',
-        FormatEnum.JSON: 'application/json',
-    }
-
-    content_type_full = content_type_fulls[out_format]
+    content_type_full = out_format.MIME()
     content_type_params = {'charset':  'utf-8'}
 
     feed_type = feedType.detect_content(content)
